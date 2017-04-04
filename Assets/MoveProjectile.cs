@@ -18,7 +18,6 @@ public class MoveProjectile : MonoBehaviour {
         new Vector3(2f, 5f, 0f)};
     float randSpin;
 
-
     // Use this for initialization
     void Start () {
 
@@ -36,6 +35,7 @@ public class MoveProjectile : MonoBehaviour {
         {
             rb.angularVelocity = whichSpin[(int)randSpin];   // the order might matter here with these two rb.* calls.
             rb.AddForce(transform.forward * force, ForceMode.Impulse);
+            randSpin = Random.Range(1f, (float)whichSpin.Length);   // OMG, in version 1, I forgot to update randSpin with a new member of the array.
             bHasFired = true;
         }
     }
@@ -45,14 +45,6 @@ public class MoveProjectile : MonoBehaviour {
         // the bunny already has a destruction time set when it's created, but that time is meant to remove the bunny if it doesn't get shot in time.
         // so, this destruction timeout is set to match when the crate gets destroyed, after collision.
         Destroy(collision.gameObject, 1.2f);
-    }
-
-    // A reciever for a message broadcasted in GameStatesAndData.cs.  Meant to speed up the crates.
-    // Just realized this won't get called because the message is broadcast on a different GameObject.
-    public void SpeedUp()
-    {
-        force += stepIncrease;
-        print("force is now " + force);
     }
 
 }

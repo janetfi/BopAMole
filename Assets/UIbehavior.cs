@@ -66,12 +66,12 @@ public class UIbehavior : MonoBehaviour {
             startScreen.transform.SetSiblingIndex(0);
 
             // make sure this block is run only once.  This makes a bit of a mini-state machine.  Does it save processing time at all?
-            gameStateAndData.currentGameState = GameStatesAndData.gameStateEnum.playTime;
+            gameStateAndData.currentGameState = GameStatesAndData.gameStateEnum.start;
         }
 
         if (gameStateAndData.currentGameState == GameStatesAndData.gameStateEnum.endGame)
         {
-            // hide the start screen by layering it behind the background image.
+            // show the end screen by layering it in front.
             endScreen.transform.SetSiblingIndex(10);
 
             // make sure this block is run only once.  This makes a bit of a mini-state machine.  Does it save processing time at all?
@@ -101,5 +101,13 @@ public class UIbehavior : MonoBehaviour {
         gameStateAndData.currentGameState = GameStatesAndData.gameStateEnum.cloudsMoving;
         audSource.Play();
 
+    }
+
+    public void OnClickReplay()
+    {
+        // hide the end screen again.
+        endScreen.transform.SetSiblingIndex(0);
+
+        gameStateAndData.currentGameState = GameStatesAndData.gameStateEnum.start;
     }
 }

@@ -12,6 +12,8 @@ public class AimSpawner : MonoBehaviour {
     Ray aimRay;
     Quaternion aimRotation;
 
+    GameObject[] bunnies;
+
 
     // Use this for initialization
     void Start () {
@@ -28,7 +30,7 @@ public class AimSpawner : MonoBehaviour {
             aimRay = ourCamera.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(aimRay.origin, aimRay.direction, Color.white);
 
-            aimRotation = Quaternion.LookRotation(aimRay.direction);    // 
+            aimRotation = Quaternion.LookRotation(aimRay.direction);    // Fire off a crate.
             Destroy(Instantiate(prefabCrate, transform.position, aimRotation), lifeOfCloneInSecs);
 
             gameStateAndData.shotsLeft -= 1;    // reduce the leftover shots.
@@ -36,6 +38,17 @@ public class AimSpawner : MonoBehaviour {
             if (gameStateAndData.shotsLeft < 0)
             {
                 print("setting endGame");
+
+                // delete all bunnies in case the player hits Replay too soon.
+                bunnies = GameObject.FindGameObjectsWithTag("Bunny");
+                if (null != bunnies)
+                {
+                    foreach (GameObject bunnyToDelete in bunnies)
+                    {
+                        bunnyToDelete.SetActive(false);
+                    }
+                }
+
                 gameStateAndData.currentGameState = GameStatesAndData.gameStateEnum.endGame;
 
             }
